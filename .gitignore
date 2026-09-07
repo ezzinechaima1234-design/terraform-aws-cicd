@@ -4,6 +4,7 @@
 *.tfstate.backup
 .terraform.lock.hcl
 *.tfvars
+!environments/dev/terraform.tfvars
 
 # Credentials
 .env
