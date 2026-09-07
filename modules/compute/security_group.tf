@@ -25,14 +25,14 @@ resource "aws_security_group" "alb" {
   }
 }
 
-# Security Group pour l'EC2 (recoit uniquement le trafic depuis l'ALB)
+# Security Group pour l'EC2 (recoit uniquement le trafic depuis ALB)
 resource "aws_security_group" "ec2" {
   name        = "${var.project_name}-ec2-sg"
-  description = "Autorise le trafic HTTP uniquement depuis l'ALB"
+  description = "Autorise le trafic HTTP uniquement depuis ALB"
   vpc_id      = var.vpc_id
 
   ingress {
-    description     = "HTTP depuis l'ALB uniquement"
+    description     = "HTTP depuis ALB uniquement"
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
