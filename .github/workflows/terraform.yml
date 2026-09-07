@@ -7,10 +7,21 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action Terraform a executer'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
 
 jobs:
   terraform:
-    name: Terraform Plan
+    name: Terraform ${{ github.event.inputs.action || 'plan' }}
     runs-on: ubuntu-latest
 
     defaults:
@@ -45,4 +56,13 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
+        if: github.event_name != 'workflow_dispatch' || github.event.inputs.action == 'plan'
         run: terraform plan -input=false -lock-timeout=60s
+
+      - name: Terraform Apply
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'apply'
+        run: terraform apply -input=false -lock-timeout=60s -auto-approve
+
+      - name: Terraform Destroy
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
+        run: terraform destroy -input=false -lock-timeout=60s -auto-approve
