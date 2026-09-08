@@ -5,6 +5,7 @@
 .terraform.lock.hcl
 *.tfvars
 !environments/dev/terraform.tfvars
+!environments/prod/terraform.tfvars
 
 # Credentials
 .env
